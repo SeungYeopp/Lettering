@@ -20,8 +20,8 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
 
     <!-- 폰트 설정 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com" />
+    <link rel="preload" href="https://fonts.gstatic.com" crossorigin />
     <!-- pretendard -->
     <link
       rel="stylesheet"
@@ -34,6 +34,28 @@
       href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="preload"
+      as="font"
+      href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff"
+      type="font/woff"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff"
+      type="font/woff"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="https://fastly.jsdelivr.net/gh/projectnoonnu/naverfont_05@1.0/Gomsin.woff"
+      type="font/woff"
+      crossorigin="anonymous"
+    />
+
     <style>
       /* GangwonEduAll */
       @font-face {
@@ -42,6 +64,7 @@
           format('woff');
         font-weight: normal;
         font-style: normal;
+        font-display: block;
       }
       /* GangwonEduSaeeum */
       @font-face {
@@ -50,6 +73,7 @@
           format('woff');
         font-weight: normal;
         font-style: normal;
+        font-display: block;
       }
       /* Gomsin */
       @font-face {
@@ -58,6 +82,7 @@
           format('woff');
         font-weight: normal;
         font-style: normal;
+        font-display: block;
       }
     </style>
 
@@ -67,6 +92,7 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
     <!-- service-worker 등록 -->
     <script>
       if ('serviceWorker' in navigator) {

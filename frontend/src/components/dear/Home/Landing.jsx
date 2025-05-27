@@ -46,17 +46,17 @@ const Landing = () => {
       const data = await getUnreadMessage();
 
       if (data?.exist) {
-        if (data.conditionType === 'SECRETTYPE') {
-          const quiz = await getQuizInfo(data.messageId);
-          setLockedData({
-            ...quiz,
-            messageId: data.messageId,
-            designType: data.designType,
-          });
-        } else {
-          setMessageInfo(data);
-          setNewLetter(true);
-        }
+        // if (data.conditionType === 'SECRETTYPE') {
+        //   const quiz = await getQuizInfo(data.messageId);
+        //   setLockedData({
+        //     ...quiz,
+        //     messageId: data.messageId,
+        //     designType: data.designType,
+        //   });
+        // } else {
+        setMessageInfo(data);
+        setNewLetter(true);
+        // }
       } else {
         console.log('[📭 새 편지가 없습니다]');
       }
@@ -78,10 +78,19 @@ const Landing = () => {
     setLockedData(null); // 모달 닫기
   };
 
-  const handleNewLetterClick = () => {
+  const handleNewLetterClick = async () => {
     if (!messageInfo) return;
 
-    console.log(messageInfo);
+    if (messageInfo.conditionType === 'SECRETTYPE') {
+      const quiz = await getQuizInfo(messageInfo.messageId);
+      setLockedData({
+        ...quiz,
+        messageId: messageInfo.messageId,
+        designType: messageInfo.designType,
+      });
+      return;
+    }
+
     const { messageId, sealingWaxId } = messageInfo;
 
     if (sealingWaxId === 1) {
@@ -127,6 +136,7 @@ const Landing = () => {
     <>
       {lockedData && (
         <SecretModal
+          isLanding={true}
           question={lockedData.quizQuestion}
           hint={lockedData.quizHint}
           correctAnswer={lockedData.quizAnswer}

@@ -19,7 +19,7 @@ pipeline {
 
           // Jenkinsfile 변경 시 전체 빌드 강제
           if (changedFiles.contains("infra/Jenkinsfile")) {
-            echo "🛠️ Jenkinsfile 변경 감지 → 전체 서비스 재빌드 강제 실행!"
+            echo "🛠️ Jenkinsfile 변경 감지 → 전체 서비스 재빌드 강제 실행"
             env.DEFAULT_CONF_CHANGED = "true"
             env.FRONTEND_CHANGED = "true"
             env.BACKEND_CHANGED = "true"
@@ -52,13 +52,18 @@ pipeline {
     }
 
     stage('백엔드 JAR 빌드') {
-      when {
-        expression { env.BACKEND_CHANGED == "true" }
-      }
       steps {
-        echo "⚙️ 백엔드 Gradle 빌드 시작"
-        dir('backend') {
-          sh './gradlew build -x test --no-daemon'
+        script {
+          def jarExists = fileExists('backend/build/libs/lettering-0.0.1-SNAPSHOT.jar')
+
+          if (env.BACKEND_CHANGED == "true" || !jarExists) {
+            echo "⚙️ 백엔드 Gradle 빌드 시작 (변경 감지=${env.BACKEND_CHANGED}, JAR 존재=${jarExists})"
+            dir('backend') {
+              sh './gradlew build -x test --no-daemon'
+            }
+          } else {
+            echo "✅ 백엔드 변경 없고, JAR도 존재 → 빌드 스킵"
+          }
         }
       }
     }

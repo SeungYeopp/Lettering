@@ -48,9 +48,42 @@ const LetterWriting = () => {
     };
     const compressedBlob = await imageCompression(file, options);
 
-    return new File([compressedBlob], file.name, {
-      type: compressedBlob.type,
+    // ✨ 압축한 결과를 다시 WebP로 변환
+    const webpBlob = await convertToWebP(compressedBlob);
+
+    return new File([webpBlob], file.name.replace(/\.\w+$/, '.webp'), {
+      type: 'image/webp',
       lastModified: Date.now(),
+    });
+  };
+
+  // ✨ Blob을 WebP로 변환하는 함수 추가
+  const convertToWebP = (blob) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+
+      reader.onload = () => {
+        const img = new Image();
+        img.src = reader.result;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+
+          canvas.toBlob(
+            (webpBlob) => {
+              resolve(webpBlob);
+            },
+            'image/webp',
+            0.8,
+          ); // 품질 80%
+        };
+      };
     });
   };
 
@@ -59,34 +92,15 @@ const LetterWriting = () => {
     const newImageItems = [];
 
     for (const file of files) {
-      // 미리보기 먼저 생성 (압축 전 원본)
-      const previewUrl = URL.createObjectURL(file);
+      // ✨ 업로드 받은 파일을 바로 압축 & WebP 변환
+      const processedFile = await compressImage(file);
 
-      // 화면에 바로 표시할 미리보기용 객체
-      const imageItem = { file, url: previewUrl }; // 임시 file
+      // ✨ WebP 변환된 파일로 미리보기 생성
+      const previewUrl = URL.createObjectURL(processedFile);
+
+      const imageItem = { file: processedFile, url: previewUrl };
 
       newImageItems.push(imageItem);
-
-      // 비동기적으로 압축 작업 시작
-      (async () => {
-        // heic 변환안함
-        // let processedFile = file;
-        // if (file.name.toLowerCase().endsWith('.heic')) {
-        //   processedFile = await convertHeicToJpeg(file);
-        // }
-        // processedFile = await compressImage(processedFile);
-        const processedFile = await compressImage(file);
-
-        // 압축된 파일로 덮어쓰기
-        imageItem.file = processedFile;
-
-        // 메모리 누수 방지
-        URL.revokeObjectURL(previewUrl);
-        imageItem.url = URL.createObjectURL(processedFile);
-
-        // 강제로 리렌더링 유도
-        setImageList((prev) => [...prev]);
-      })();
     }
 
     const totalImages = [...ImageList, ...newImageItems].slice(0, 10);
@@ -108,50 +122,58 @@ const LetterWriting = () => {
 
       // navigate(`/letter/preview`);
 
-      let segmentedText;
-      try {
-        segmentedText = await segmentText(letterContent, textCount);
-        console.log('AI가 생성한 글조각:', segmentedText);
+      // let segmentedText;
+      // try {
+      //   segmentedText = await segmentText(letterContent, textCount);
+      //   console.log('AI가 생성한 글조각:', segmentedText);
 
-        if (!Array.isArray(segmentedText)) {
-          throw new Error('AI 응답이 배열이 아님');
-        }
+      //   if (!Array.isArray(segmentedText)) {
+      //     throw new Error('AI 응답이 배열이 아님');
+      //   }
 
-        // ✅ 길이 부족하면 빈 항목으로 채움
-        if (segmentedText.length < textCount) {
-          const missingCount = textCount - segmentedText.length;
-          segmentedText = [...segmentedText, ...Array(missingCount).fill('')];
-          console.warn(`AI 분할 수 부족. ${missingCount}개의 빈 항목으로 채움.`);
-        } else if (segmentedText.length > textCount) {
-          segmentedText = segmentedText.slice(0, textCount); // 혹시 넘쳤을 경우
-        }
-      } catch (error) {
-        console.warn('AI 문장 나누기 실패, fallback으로 줄바꿈 처리함:', error);
-        segmentedText = splitTextBySentence(letterContent, textCount);
+      //   // ✅ 길이 부족하면 빈 항목으로 채움
+      //   if (segmentedText.length < textCount) {
+      //     const missingCount = textCount - segmentedText.length;
+      //     segmentedText = [...segmentedText, ...Array(missingCount).fill('')];
+      //     console.warn(`AI 분할 수 부족. ${missingCount}개의 빈 항목으로 채움.`);
+      //   } else if (segmentedText.length > textCount) {
+      //     segmentedText = segmentedText.slice(0, textCount); // 혹시 넘쳤을 경우
+      //   }
+      // } catch (error) {
+      //   console.warn('AI 문장 나누기 실패, fallback으로 줄바꿈 처리함:', error);
+      //   segmentedText = splitTextBySentence(letterContent, textCount);
 
-        if (segmentedText.length < textCount) {
-          const missingCount = textCount - segmentedText.length;
-          segmentedText = [...segmentedText, ...Array(missingCount).fill('')];
-        }
-      }
+      //   if (segmentedText.length < textCount) {
+      //     const missingCount = textCount - segmentedText.length;
+      //     segmentedText = [...segmentedText, ...Array(missingCount).fill('')];
+      //   }
+      // }
 
-      const result = await submitPostcard(
-        ImageList.map((img) => img.file),
-        letterContent,
-      );
+      let segmentedText = splitTextBySentence(letterContent, textCount);
 
-      if (result?.key) {
-        setRedisMessageKey(result.key);
-        // console.log(result.key);
-        const postcard = await getPostcard(result.key);
+      navigate('/letter/preview', {
+        state: {
+          segmentedText,
+        },
+      });
 
-        navigate('/letter/preview', {
-          state: {
-            postcard,
-            segmentedText,
-          },
-        });
-      }
+      // const result = await submitPostcard(
+      //   ImageList.map((img) => img.file),
+      //   letterContent,
+      // );
+
+      // if (result?.key) {
+      //   setRedisMessageKey(result.key);
+      //   // console.log(result.key);
+      //   const postcard = await getPostcard(result.key);
+
+      //   navigate('/letter/preview', {
+      //     state: {
+      //       postcard,
+      //       segmentedText,
+      //     },
+      //   });
+      // }
     } finally {
       setIsLoading(false);
     }
