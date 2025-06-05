@@ -1,21 +1,8 @@
-
 <div align="center">
-  <h1> Lettering <img src="레터링 메인 이미지 아이콘" height="35">
+  <h1> Lettering
   </h1>
 
 </div>
-
-> 배포 링크 <br /> > **https://letterring.shop/**
-
-[장표표지.pdf](%EC%9E%A5%ED%91%9C%ED%91%9C%EC%A7%80.pdf)
-
-![제목을-입력해주세요_-001.jpg](%EC%A0%9C%EB%AA%A9%EC%9D%84-%EC%9E%85%EB%A0%A5%ED%95%B4%EC%A3%BC%EC%84%B8%EC%9A%94_-001.jpg)
-
-> 배포 링크
->
-> [**https://letterring.shop/**](https://letterring.shop/)
-
-[figma](https://www.figma.com/design/MfCRRB3bWLgo4YMorH7M4U/%EC%A1%B8%EC%9E%91_%EB%94%94%EC%9E%90%EC%9D%B8?node-id=438-1940&t=iFzQIb6C351DL0Wr-0)   |
 
 ## **📄 목차**
 
@@ -71,51 +58,26 @@
 - 사용자가 받은 엽서를 추억으로 간직할 수 있도록 이미지 저장 기능 제공
 
 ---
-
 ## 🖼️ 주요 화면
 
-### ✉️ 보내는 사람(Sender)
+### ✉️ 보내는 사람 (Sender)
 
-**온보딩 - 서비스 소개 및 로그인**  
-<img src="./images/sender/sender-onboarding.gif" width="180" />
+| 설명 | 설명 |
+|------|------|
+| **온보딩 - 서비스 소개 및 로그인**<br><img src="./images/sender/sender-onboarding.gif" width="250" /> | **마이페이지 - 닉네임, 폰트 설정, 키링 목록 확인**<br><img src="./images/sender/mypage.gif" width="250" /> |
+| **키링구매 - 키링 디자인 선택 및 결제 진행**<br><img src="./images/sender/purchase-keyring.gif" width="250" /> | **편지 디자인 선택**<br><img src="./images/sender/template-select.gif" width="250" /> |
+| **편지 작성 - 이미지 업로드 및 내용 입력**<br><img src="./images/sender/letter-writing.gif" width="250" /> | **AI 어시스턴스**<br><img src="./images/sender/ai-assist.gif" width="250" /> |
+| **받는 사람 설정**<br><img src="./images/sender/delivery-type-select.gif" width="250" /> | **편지 상세 - 편지 템플릿 동적 UI**<br><img src="./images/sender/letter-detail.gif" width="250" /> |
 
-**마이페이지 - 닉네임, 폰트 설정, 키링 목록 확인**  
-<img src="./images/sender/mypage.gif" width="180" />
+---
 
-**키링구매 - 키링 디자인 선택 및 결제 진행**  
-<img src="./images/sender/purchase-keyring.gif" width="180" />
+### 📮 받는 사람 (Dear)
 
-**편지 디자인 선택**  
-<img src="./images/sender/template-select.gif" width="180" />
-
-**편지 작성 - 이미지 업로드 및 내용 입력**  
-<img src="./images/sender/letter-writing.gif" width="180" />
-
-**AI 어시스턴스**  
-<img src="./images/sender/ai-assist.gif" width="180" />
-
-**받는 사람 설정**  
-<img src="./images/sender/delivery-type-select.gif" width="180" />
-
-**편지 상세 - 편지 템플릿 동적 UI**  
-<img src="./images/sender/letter-detail.gif" width="180" />
-
-### 📮 받는 사람(Dear)
-
-**노태그 대기 화면**  
-<img src="./images/dear/no-tag.gif" width="180" />
-
-**새로운 편지 도착 시 랜딩**  
-<img src="./images/dear/dear-new-message.gif" width="180" />
-
-**새로운 편지 없을 때 랜딩**  
-<img src="./images/dear/dear-landing.gif" width="180" />
-
-**비밀편지 열람**  
-<img src="./images/dear/secret-open.gif" width="180" />
-
-**키링 영구 삭제 확인 화면**  
-<img src="./images/dear/keyring-delete.gif" width="180" />
+| 설명 | 설명 |
+|------|------|
+| **노태그 대기 화면**<br><img src="./images/dear/no-tag.gif" width="250" /> | **새로운 편지 도착 시 랜딩**<br><img src="./images/dear/dear-new-message.gif" width="250" /> |
+| **새로운 편지 없을 때 랜딩**<br><img src="./images/dear/dear-landing.gif" width="250" /> | **비밀편지 열람**<br><img src="./images/dear/secret-open.gif" width="250" /> |
+| **키링 영구 삭제 확인 화면**<br><img src="./images/dear/keyring-delete.gif" width="250" /> |  |
 
 ---
 
@@ -205,5 +167,5 @@
 
 | 김지수                                     | 강승엽                                       | 공예슬                         | 유하람                                   | 이하나                                   | 이효승                                           |
 | ------------------------------------------ | -------------------------------------------- | ------------------------------ | ---------------------------------------- | ---------------------------------------- | ------------------------------------------------ |
-| BE                                         | BE                                           | BE+AI                          | FE                                       | FE+INFRA                                 | FE                                               |
+| BE                                         | BE+AI                                           | BE+AI                          | FE                                       | FE+INFRA                                 | FE                                               |
 | [@jisu-0305](https://github.com/jisu-0305) | [@SeungYeopp](https://github.com/SeungYeopp) | [@Oys](https://github.com/0ys) | [@Ryuharam](https://github.com/Ryuharam) | [@ehanadul](https://github.com/ehanadul) | [@hyoseung2000](https://github.com/hyoseung2000) |
